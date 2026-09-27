@@ -192,7 +192,8 @@ def get_stats(db: Session = Depends(get_db)):
             item.expiry_date >= current,
             item.expiry_date <= current + timedelta(days=EXPIRING_SOON_DAYS),
         ).count(),
-        expired_count=active.filter(item.expiry_date < current).count(),
+        # TETT'i geçmiş ürünler "süresi dolmuş" sayılmaz (kontrol edilerek tüketilebilir)
+        expired_count=active.filter(item.expiry_date < current, item.date_type != "TETT").count(),
         consumed_count=consumed,
         wasted_count=wasted,
         consumed_this_month=count_status("consumed", month_start_utc),

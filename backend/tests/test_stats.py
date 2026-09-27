@@ -10,6 +10,7 @@ def test_stats_empty(client):
 
 def test_stats_counts(client):
     add_item(client, "Süt", days=-1)
+    add_item(client, "Makarna", days=-10, date_type="TETT")  # süresi dolmuş sayılmaz
     add_item(client, "Yumurta", days=0)
     add_item(client, "Peynir", days=3)
     add_item(client, "Pirinç", days=30)
@@ -23,7 +24,7 @@ def test_stats_counts(client):
     client.post(f"/api/inventory/{wasted2['id']}/close", json={"outcome": "wasted"})
 
     stats = client.get("/api/stats").json()
-    assert stats["active_count"] == 4
+    assert stats["active_count"] == 5
     assert stats["expired_count"] == 1
     assert stats["expiring_soon_count"] == 2  # bugün + 3 gün sonra
     assert stats["consumed_count"] == 3

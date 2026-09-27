@@ -80,49 +80,55 @@ class _StatsScreenState extends State<StatsScreen> {
             if (stats != null) ...[
               _SavedRateCard(stats: stats),
               const SizedBox(height: 12),
-              Row(
-                children: [
-                  _StatTile(
-                    label: 'Tüketilen',
-                    value: stats.consumedCount,
-                    detail: 'Bu ay: ${stats.consumedThisMonth}',
-                    icon: Icons.check_circle_rounded,
-                    iconColor: AppColors.good,
-                  ),
-                  const SizedBox(width: 12),
-                  _StatTile(
-                    label: 'Çöpe giden',
-                    value: stats.wastedCount,
-                    detail: 'Bu ay: ${stats.wastedThisMonth}',
-                    icon: Icons.delete_sweep_rounded,
-                    iconColor: AppColors.critical,
-                  ),
-                ],
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _StatTile(
+                      label: 'Tüketilen',
+                      value: stats.consumedCount,
+                      detail: 'Bu ay: ${stats.consumedThisMonth}',
+                      icon: Icons.check_circle_rounded,
+                      iconColor: AppColors.good,
+                    ),
+                    const SizedBox(width: 12),
+                    _StatTile(
+                      label: 'Çöpe giden',
+                      value: stats.wastedCount,
+                      detail: 'Bu ay: ${stats.wastedThisMonth}',
+                      icon: Icons.delete_sweep_rounded,
+                      iconColor: AppColors.critical,
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 12),
-              Row(
-                children: [
-                  _StatTile(
-                    label: 'Dolapta',
-                    value: stats.activeCount,
-                    icon: Icons.kitchen_rounded,
-                    iconColor: AppColors.blue,
-                  ),
-                  const SizedBox(width: 12),
-                  _StatTile(
-                    label: '3 gün içinde',
-                    value: stats.expiringSoonCount,
-                    icon: Icons.access_time_filled,
-                    iconColor: AppColors.serious,
-                  ),
-                  const SizedBox(width: 12),
-                  _StatTile(
-                    label: 'SKT geçmiş',
-                    value: stats.expiredCount,
-                    icon: Icons.dangerous_rounded,
-                    iconColor: AppColors.critical,
-                  ),
-                ],
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _StatTile(
+                      label: 'Dolapta',
+                      value: stats.activeCount,
+                      icon: Icons.kitchen_rounded,
+                      iconColor: AppColors.blue,
+                    ),
+                    const SizedBox(width: 12),
+                    _StatTile(
+                      label: '3 gün içinde',
+                      value: stats.expiringSoonCount,
+                      icon: Icons.access_time_filled,
+                      iconColor: AppColors.serious,
+                    ),
+                    const SizedBox(width: 12),
+                    _StatTile(
+                      label: 'SKT geçmiş',
+                      value: stats.expiredCount,
+                      icon: Icons.dangerous_rounded,
+                      iconColor: AppColors.critical,
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 12),
               if (stats.mostWastedCategories.isNotEmpty) _WastedCategoriesCard(categories: stats.mostWastedCategories),

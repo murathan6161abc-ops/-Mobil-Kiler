@@ -327,17 +327,19 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
             const SizedBox(height: 20),
 
             const FieldLabel('Nerede saklanıyor?'),
-            SizedBox(
-              width: double.infinity,
-              child: SegmentedButton<StorageLocation>(
-                segments: [
-                  for (final location in StorageLocation.values)
-                    ButtonSegment(value: location, icon: Icon(locationIcon(location)), label: Text(location.label)),
-                ],
-                selected: {_location},
-                showSelectedIcon: false,
-                onSelectionChanged: (selection) => setState(() => _location = selection.first),
-              ),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final location in StorageLocation.values)
+                  ChoiceChip(
+                    avatar: Icon(locationIcon(location), size: 18),
+                    label: Text(location.label),
+                    selected: _location == location,
+                    showCheckmark: false,
+                    onSelected: (_) => setState(() => _location = location),
+                  ),
+              ],
             ),
             const SizedBox(height: 20),
 

@@ -200,7 +200,10 @@ class _InventoryScreenState extends State<InventoryScreen> {
               expandedHeight: 140,
               pinned: true,
               automaticallyImplyLeading: false,
+              // Kaydırınca daralan çubuk da koyu yeşil kalsın (beyaz yazı okunur olsun)
+              backgroundColor: AppColors.primaryDark,
               flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
                 title: const Text(
                   'Mobil Kiler',
                   style: TextStyle(fontWeight: FontWeight.w800, fontSize: 22, color: Colors.white, letterSpacing: 1),

@@ -58,7 +58,7 @@ void main() {
     expect(find.textContaining('Open Food Facts'), findsOneWidget);
 
     await tester.tap(find.text('TETT (tavsiye)'));
-    await tester.tap(find.text('Buzdolabı'));
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Buzdolabı'));
     await tester.pump();
     await tester.ensureVisible(find.text('Envantere Ekle'));
     await tester.tap(find.text('Envantere Ekle'));
