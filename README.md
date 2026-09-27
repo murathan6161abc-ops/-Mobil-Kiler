@@ -75,7 +75,13 @@ pytest
 
 ### 2. Mobil uygulama
 
-Flutter 3.41 veya üstü gerekir.
+**Hazır APK:** Her gönderimde GitHub Actions telefona kurulabilir bir APK derler.
+GitHub'da **Actions → CI → en son başarılı çalıştırma → Artifacts → `mobil-kiler-apk`**
+dosyasını indirin, zip'ten çıkan `app-release.apk` dosyasını Android telefona kurun
+("bilinmeyen kaynaklardan yükleme" izni istenir). Sunucu adresini uygulamanın Ayarlar
+sekmesinden girin.
+
+Kendiniz derlemek için Flutter 3.41 veya üstü gerekir.
 
 ```bash
 cd mobil_uygulamam
