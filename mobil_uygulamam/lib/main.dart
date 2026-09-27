@@ -1,39 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:mobil_uygulamam/screens/inventory_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:mobil_uygulamam/screens/home_screen.dart';
+import 'package:mobil_uygulamam/services/app_services.dart';
+import 'package:mobil_uygulamam/theme.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final services = await AppServices.create();
+  runApp(MyApp(services: services));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.services, this.home = const HomeScreen()});
+
+  final AppServices services;
+
+  /// Testlerde tek bir ekranı açmak için değiştirilebilir.
+  final Widget home;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Mobil Kiler',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF2E7D32),
-          brightness: Brightness.light,
-        ),
-        useMaterial3: true,
-        fontFamily: 'Roboto',
-        appBarTheme: const AppBarTheme(
-          centerTitle: true,
-          elevation: 0,
-        ),
-        cardTheme: CardThemeData(
-          elevation: 2,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        ),
-        floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          elevation: 4,
-          shape: CircleBorder(),
-        ),
+    return AppScope(
+      services: services,
+      child: MaterialApp(
+        title: 'Mobil Kiler',
+        debugShowCheckedModeBanner: false,
+        theme: buildAppTheme(),
+        // Tarih seçici gibi hazır bileşenler Türkçe görünsün
+        locale: const Locale('tr', 'TR'),
+        supportedLocales: const [Locale('tr', 'TR')],
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        home: home,
       ),
-      home: const InventoryScreen(),
     );
   }
 }
