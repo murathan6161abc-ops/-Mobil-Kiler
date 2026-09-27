@@ -103,7 +103,7 @@ class ExpiryDateParser {
   /// Metindeki en olası son tüketim tarihini döner; bulamazsa null.
   ExpiryParseResult? parse(String text) {
     if (text.trim().isEmpty) return null;
-    final folded = _fold(text);
+    final folded = _fixOcrDigits(_fold(text));
     final candidates = _findCandidates(folded);
     if (candidates.isEmpty) return null;
 
@@ -124,6 +124,31 @@ class ExpiryDateParser {
       _ => null,
     };
     return ExpiryParseResult(date: best.date, dateType: type, matchedText: text.substring(best.start, best.end).trim());
+  }
+
+  // Tarihe benzeyen parçalar: aralarında nokta / eğik çizgi / tire olan 2-3
+  // grup; her grupta en az bir gerçek rakam bulunur (ör. "12.O5.2O27").
+  // Böylece "B.B." gibi kısaltmalar tarihle birleştirilmez.
+  static const String _ocrGroup = r'(?=[0-9OILSBZ|]{0,3}\d)[0-9OILSBZ|]{1,4}';
+  static final RegExp _dateLikeToken = RegExp('(?<![A-Z0-9])$_ocrGroup(?:\\s?[./\\-]\\s?$_ocrGroup){1,2}(?![A-Z0-9])');
+  static const Map<String, String> _ocrDigitFixes = {
+    'O': '0',
+    'I': '1',
+    'L': '1',
+    '|': '1',
+    'S': '5',
+    'B': '8',
+    'Z': '2',
+  };
+
+  /// Kamera ile okunan etiketlerde sık görülen harf-rakam karışıklıklarını
+  /// (0 yerine O, 1 yerine I/l, 5 yerine S...) yalnızca tarihe benzeyen
+  /// parçalarda düzeltir. Karakter sayısı değişmez.
+  static String _fixOcrDigits(String folded) {
+    return folded.replaceAllMapped(_dateLikeToken, (match) {
+      final token = match[0]!;
+      return token.split('').map((char) => _ocrDigitFixes[char] ?? char).join();
+    });
   }
 
   /// Türkçe karakterleri ASCII'ye çevirip büyük harf yapar. Karakter sayısı

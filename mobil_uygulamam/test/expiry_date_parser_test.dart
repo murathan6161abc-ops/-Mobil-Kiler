@@ -71,6 +71,17 @@ void main() {
     });
   });
 
+  test('kamera okumasındaki harf-rakam karışıklıkları düzeltilir', () {
+    expectDate('SKT: 12.O5.2O27', DateTime(2027, 5, 12), DateType.skt);
+    expectDate('SKT: I2/05/2027', DateTime(2027, 5, 12), DateType.skt);
+    expectDate('S.K.T 1l.05.2027', DateTime(2027, 5, 11), DateType.skt);
+    expectDate('TETT: O5/2O28', DateTime(2028, 5, 31), DateType.tett);
+    // "B.B." (best before) ifadesi rakama çevrilmez
+    expectDate('B.B. 12.05.2027', DateTime(2027, 5, 12), DateType.tett);
+    // Tarih olmayan kelimelere dokunulmaz
+    expectDate('SÜT SKT 12.05.2027', DateTime(2027, 5, 12), DateType.skt);
+  });
+
   test('etiketsiz birden çok tarihte en geç olan seçilir', () {
     expectDate('01.09.2026 01.03.2027', DateTime(2027, 3, 1), null);
   });
